@@ -50,7 +50,7 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    private ArrayAdapter<String> mForecastAdapter;
+    public ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -116,7 +116,7 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         /* The date/time conversion code is going to be moved outside the asynctask later,
@@ -210,16 +210,25 @@ public class ForecastFragment extends Fragment {
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
-
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected void onPostExecute(String[] results)
+        {
+            if (results != null)
+            {
+                mForecastAdapter.clear();
+                for (String dayForecastString : results)
+                {
+                    mForecastAdapter.add(dayForecastString);
+                }
+            }
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
 
             // If there's no zip code, there's nothing to look up.  Verify size of params.
             if (params.length == 0) {
@@ -287,8 +296,6 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-
-                Log.v("ForecastFragment.java", forecastJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
@@ -306,6 +313,15 @@ public class ForecastFragment extends Fragment {
                     }
                 }
             }
+
+            try{
+                return getWeatherDataFromJson(forecastJsonStr, numDays);
+            } catch (JSONException ex) {
+                Log.e(LOG_TAG, ex.getMessage(), ex);
+                ex.printStackTrace();
+            }
+
+            // This will only happen if there was an error getting or parsing the forecast.
             return null;
         }
     }
