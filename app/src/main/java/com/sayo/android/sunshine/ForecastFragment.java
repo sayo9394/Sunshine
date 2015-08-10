@@ -15,6 +15,7 @@
  */
 package com.sayo.android.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -87,7 +89,7 @@ public class ForecastFragment extends Fragment {
 
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         String[] data = {
-                "Mon 6/23?- Sunny - 31/17",
+                "Mon 6/23 - Sunny - 31/17",
                 "Tue 6/24 - Foggy - 21/8",
                 "Wed 6/25 - Cloudy - 22/17",
                 "Thurs 6/26 - Rainy - 18/11",
@@ -112,7 +114,16 @@ public class ForecastFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = (String)parent.getItemAtPosition(position);
+                Intent otherIntent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
 
+                startActivity(otherIntent);
+            }
+        });
         return rootView;
     }
 
