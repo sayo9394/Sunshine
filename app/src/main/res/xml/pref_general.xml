@@ -12,8 +12,5 @@
         android:key="@string/pref_temp_unit_key"
         android:defaultValue="@string/pref_temp_unit_default"
         android:entries="@array/pref_weather_unit_entries"
-        android:entryValues="@array/pref_weather_unit_values"
-
-        />
-
+        android:entryValues="@array/pref_weather_unit_values"/>
 </PreferenceScreen>
