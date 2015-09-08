@@ -96,19 +96,6 @@ public class ForecastFragment extends Fragment {
             updateWeather();
             return true;
         }
-        else if (id == R.id.map_settings)
-        {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String locationPref = sharedPref.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri location = Uri.parse("geo:0,0?q=" + locationPref);
-            intent.setData(location);
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                startActivity(intent);
-            }
-        }
 
         return super.onOptionsItemSelected(item);
     }
