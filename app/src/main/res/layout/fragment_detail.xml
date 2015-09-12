@@ -10,5 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/forecastTextView"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        />
  </FrameLayout>
